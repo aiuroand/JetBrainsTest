@@ -10,8 +10,9 @@
 
 using byteVector = std::vector<uint8_t>;
 
-/** A simple function to convert an integer into 4 bytes of its binray representation
-*/
+/** 
+ * @brief A simple function to convert an integer into 4 bytes of its binray representation
+ */
 byteVector toByteVector(int i) {
   byteVector res;
   int mask = 0xff000000;
@@ -22,9 +23,16 @@ byteVector toByteVector(int i) {
   return res;
 }
 
+/**
+ * @brief Test scenario with two threads performing insertions and lookups
+ *
+ * In this test, one thread inserts even-numbered elements into the map 
+ * and then attempts to find them. The other thread does the same for 
+ * odd-numbered elements
+ */
 CMapWrapper testMap;
 
-void test1(int mod) { 
+void test1_inner(int mod) { 
   for (int i = 0; i < 100000; ++i)
     if (i % 2 == mod) {
       byteVector key = toByteVector(i);
@@ -38,12 +46,19 @@ void test1(int mod) {
     }
 }
 
-int main(void) {
-  std::thread t1 (test1, 0);
-  std::thread t2 (test1, 1);
+void test1(void) {
+  std::thread t1 (test1_inner, 0);
+  std::thread t2 (test1_inner, 1);
 
   t1.join();
   t2.join();
+}
+
+
+
+int main(void) {
+  
+  test1();
 
   return 0;
 }
