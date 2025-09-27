@@ -1,12 +1,18 @@
-# Thread-safe version of std::map
+# Thread-safe Red-Black Tree
 
-Supported operations are insert and find.
+A simple thread-safe implementation of a Red-Black Tree that supports insertion and search operations.
 
-Keys/values are represented by std::vector<uint8_t>.
+Keys and values are stored as `std::vector<uint8_t>`.
 
 ## Files
-`CMapWrapper.cpp` - implements the std::map wrapper. <br> 
-`main.cpp`        - provides basic multithreaded testing.
+- `main.cpp`              – main.  
+- `CTree.h` + `CTree.cpp` – implementation of the custom thread-safe `CTree` class.  
+- `tests.h`               – basic and extended test scenarios.
+
+## Thread Safety
+- Read operations (`find`) use shared locks for concurrent access.  
+- Write operations (`insert`) use exclusive locks to prevent race conditions.
 
 ## Compilation
-g++ main.cpp -std=c++20
+
+g++ main.cpp CTree.cpp -std=c++20
